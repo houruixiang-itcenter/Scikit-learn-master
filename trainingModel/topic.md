@@ -1,0 +1,1 @@
+- 标准方程 --- Standard equation
