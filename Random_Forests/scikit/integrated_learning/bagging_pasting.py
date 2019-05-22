@@ -2,17 +2,22 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/5/20 下午10:31
 # @Author  : Aries
-# @Site    : 
+# @Site    :
 # @File    : bagging_pasting.py
 # @Software: PyCharm
 
 '''
 bagging and pasting
 '''
+import warnings
+
 from sklearn.ensemble import BaggingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from command.DataUtils import get_serialize_data
 from sklearn.metrics import accuracy_score
+
+warnings.filterwarnings("ignore")
+
 '''
 1.硬投票<特征> and 软投票<概率> 是集合不同的算法模型训练相同的数据
 
@@ -39,24 +44,31 @@ x_test = get_serialize_data('x_test', 3)
 y_test = get_serialize_data('y_test', 3)
 
 bag_clf = BaggingClassifier(
-    DecisionTreeClassifier(), n_estimators=500, max_samples=100,
-    bootstrap=True, n_jobs=-1,random_state=42
+	DecisionTreeClassifier(), n_estimators=500, max_samples=100,
+	bootstrap=True, n_jobs=-1, random_state=42
 )
 bag_clf.fit(x_train, y_train)
 y_pred = bag_clf.predict(x_test)
 print(accuracy_score(y_test, y_pred))
 
 bag_clf1 = BaggingClassifier(
-    DecisionTreeClassifier(), n_estimators=500, max_samples=100,
-    bootstrap=False, n_jobs=-1,random_state=42
+	DecisionTreeClassifier(), n_estimators=500, max_samples=100,
+	bootstrap=False, n_jobs=-1, random_state=42
 )
 
 bag_clf1.fit(x_train, y_train)
 y_pred1 = bag_clf.predict(x_test)
 print(accuracy_score(y_test, y_pred1))
 
-print('-------------------------------------------------random Patches----------------------------------------------')
+print('----------------------------------------------random Patches特征抽样--------------------------------------------')
 
 '''
 上面是对实例进行抽样 在bagging/pasting中 还可以对特征进行抽样 对应参数:bootstrap_features and max_features等 这叫做随机子空间法
 '''
+bag_clf2 = BaggingClassifier(
+	DecisionTreeClassifier(), n_estimators=500, max_features=2,
+	bootstrap=True, n_jobs=-1, random_state=42
+)
+bag_clf2.fit(x_train, y_train)
+y_pred2 = bag_clf2.predict(x_test)
+print(accuracy_score(y_test, y_pred2))

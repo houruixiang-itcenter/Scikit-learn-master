@@ -25,6 +25,7 @@ from sklearn.svm import SVC
 from command.DataUtils import get_serialize_data, serialize_data
 from sklearn.metrics import accuracy_score
 warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore')
 
 
 '''
