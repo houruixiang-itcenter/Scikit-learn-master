@@ -51,14 +51,6 @@ fpr, tpr, threshold = roc_curve(y_train_5, y_scores)
 下面来看matplotlib绘制FPR对TPR的曲线
 '''
 
-
-def plot_sgd_roc():
-    plot_roc_curve(fpr, tpr)
-    plt.show()
-
-
-# plot_sgd_roc()
-
 '''
 
 随着真正率的提高 假正率会随之提高  当然反之亦然  
@@ -69,6 +61,14 @@ def plot_sgd_roc():
 当然还有一种评估分类器的方法是计算曲线下方的面积  叫做AUC <随机情况下 是0.5   最完美情况下是 1>
 '''
 print(roc_auc_score(y_train_5, y_scores))
+
+
+def plot_sgd_roc():
+    plot_roc_curve(fpr, tpr)
+    plt.show()
+
+
+plot_sgd_roc()
 
 
 def get_sgd_fpr_and_tpr():
