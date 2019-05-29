@@ -91,5 +91,37 @@ print(X_reduced)
 '''
 绘制解释方差和维度数量的函数
 '''
-explained_variance_ratio_vs_num(range(0, len(cumsum)), cumsum)
+# explained_variance_ratio_vs_num(range(0, len(cumsum)), cumsum)
+# plt.show()
+print('---------------------------------------------MNIST-------------------------------------------------')
+'''
+housing 数据特征太少 我们来使用MNIST
+'''
+X_train = get_serialize_data('X_train', 5)
+pca = PCA()
+X_reduced = pca.fit_transform(X_train)
+print(X_reduced)
+cumsum = np.cumsum(pca.explained_variance_ratio_)
+explained_variance_ratio_vs_num(range(0, 400), cumsum[:400])
 plt.show()
+
+print('---------------------------------------------压缩PCA-------------------------------------------------')
+'''
+从上面MNIST的降维来看,MNIST原有特征维784
+降维之后<我们选择95%的方差解释率的叠加>  这样特征会变为150多个 
+这保留了绝大多数差异性的同时,数据集的大小压缩为原来的20%
+这样便极大的提升了训练的速度
+'''
+pca = PCA(n_components=0.95)
+X_reduced = pca.fit_transform(X_train)
+print(len(X_reduced))
+
+'''
+同理原始数据压缩之后 也可以解压缩恢复
+但是由于我们是选取95%的方差解释率叠加进行压缩的
+所以解压缩之后的数据会与原始数据存在差值,但是他很大可能的接近于原始数据
+
+原始数据和重建数据(解压缩之后的数据)之间的均方距离,称为重建误差
+'''
+x_mnist_recovered = pca.inverse_transform(X_reduced)
+print(len(x_mnist_recovered))

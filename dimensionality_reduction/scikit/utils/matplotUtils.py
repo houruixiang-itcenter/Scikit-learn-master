@@ -12,5 +12,5 @@ def explained_variance_ratio_vs_num(num, explained_variance_ratio):
     plt.xlabel('num')
     plt.ylabel('explained_variance_ratio')
     plt.plot(num, explained_variance_ratio)
-    plt.xlim(0, 11)
+    plt.xlim(0, 400)
     plt.ylim(0, 1)
