@@ -12,9 +12,12 @@ PCA是当下最流行的降维算法
 
 注意 数据集绝对不能有缺省 不然会有Nan值出现  影响code的运行
 '''
+from os import path
+from tempfile import mkdtemp
+
 from command.DataUtils import get_serialize_data
 import numpy as np
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA, IncrementalPCA, KernelPCA
 import matplotlib.pyplot as plt
 
 from dimensionality_reduction.scikit.utils.matplotUtils import explained_variance_ratio_vs_num
@@ -103,7 +106,7 @@ X_reduced = pca.fit_transform(X_train)
 print(X_reduced)
 cumsum = np.cumsum(pca.explained_variance_ratio_)
 explained_variance_ratio_vs_num(range(0, 400), cumsum[:400])
-plt.show()
+# plt.show()
 
 print('---------------------------------------------压缩PCA-------------------------------------------------')
 '''
@@ -114,7 +117,7 @@ print('---------------------------------------------压缩PCA-------------------
 '''
 pca = PCA(n_components=0.95)
 X_reduced = pca.fit_transform(X_train)
-print(len(X_reduced))
+print(X_reduced.shape[1])
 
 '''
 同理原始数据压缩之后 也可以解压缩恢复
@@ -124,4 +127,62 @@ print(len(X_reduced))
 原始数据和重建数据(解压缩之后的数据)之间的均方距离,称为重建误差
 '''
 x_mnist_recovered = pca.inverse_transform(X_reduced)
-print(len(x_mnist_recovered))
+print(x_mnist_recovered.shape[1])
+print('---------------------------------------------增量PCA-------------------------------------------------')
+'''
+之前的PCA必须让整个数据集进入内存,才可以进行降维
+---------------------------
+幸运的是 我们可以使用增量PCA算法(IPCA):
+这样将训练集分成一个个的小批量,一次给IPCA算法喂一个;
+对于大型的数据集来说,这样做比较节约内存,而且可以支持在线应用PCA
+????我觉得应该支持局部更新这样就很棒了
+
+
+
+code :Scikit-Learn 方式一
+1.将MNIST分成100个小批量(使用Numpy的array_split()函数)
+2.然后一次次的喂给Scikit-Learn的IncrementalPCA
+3.但是每次必须为每个小批量使用partial_fit()方法
+'''
+n_batches = 100
+inc_pca = IncrementalPCA(n_components=154)
+for x_batch in np.array_split(X_train, n_batches):
+	# 部分适配
+	inc_pca.partial_fit(x_batch)
+
+X_mnist_reduced = inc_pca.transform(X_train)
+
+'''
+方式二:
+使用Numpy的memmap类,他允许巧妙的操控一个存储在磁盘中的二进制文件里的大型数组
+而且memmap这个类仅在需要加载到内存中的时候才会加载
+IncrementalPCA虽然是分割训练集进行批量的训练
+但是在运行期间还是会占用内存
+
+明天好好看看
+'''
+X_mm = np.memmap('../assets/X_train', mode='readonly', shape=(154, 6000))
+batch_size = 100
+inc_pca = IncrementalPCA(n_components=154, batch_size=batch_size)
+inc_pca.fit(X_mm)
+
+print('---------------------------------------------随机PCA-------------------------------------------------')
+'''
+随机PCA的优势就是时间复杂度可控
+
+当明确要求取前d个主成分(此时如果d 远远小于n),则使用这个会好一点
+'''
+rnd_pca = PCA(n_components=154, svd_solver='randomized')
+X_rnd_reduced = rnd_pca.fit_transform(X_train)
+print(X_rnd_reduced.shape)
+
+print('---------------------------------------------核主成分分析-------------------------------------------------')
+'''
+降维时候同样可以使用核技巧
+作用:使复杂的非线性投影降维成为可能
+
+这里我们使用RBF(高斯相似度)核函数
+'''
+rbf_pca = KernelPCA(n_components=2,kernel='rbf',gamma=0.04)
+x_rbf_reduced = rbf_pca.fit_transform(X_train)
+print(x_rbf_reduced.shape)

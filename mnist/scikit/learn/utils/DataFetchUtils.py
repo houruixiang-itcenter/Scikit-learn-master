@@ -22,7 +22,7 @@ def get_mnist():
     :return:
     '''
     try:
-        if get_serialize_data('mnist') == None:
+        if get_serialize_data('mnist') is None:
             print('mnist is none')
             mnist = fetch_mldata('MNIST original')
             serialize_data(mnist, 'mnist')
