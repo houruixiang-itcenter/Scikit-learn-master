@@ -15,7 +15,7 @@ from sklearn.preprocessing import LabelBinarizer
 from housing.scikit.learn.housingUtils import load_housing_data, spilt_train_test, unique_spilt_train_test_by
 import numpy as np
 
-housing = load_housing_data('../../datasets/housing')
+housing = load_housing_data('../datasets/housing')
 
 
 # todo 产出训练数据和测试数据

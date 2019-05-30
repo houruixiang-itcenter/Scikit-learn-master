@@ -17,8 +17,8 @@ import numpy as np
 X = get_unlabel_data()
 X = X.drop('ocean_proximity',axis=1)
 Y = get_label_data()
-X = np.array(X)
-Y = np.array(Y)
+# X = np.array(X)
+# Y = np.array(Y)
 '''
 处理X的缺省
 '''
