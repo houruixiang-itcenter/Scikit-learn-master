@@ -12,14 +12,11 @@ PCA是当下最流行的降维算法
 
 注意 数据集绝对不能有缺省 不然会有Nan值出现  影响code的运行
 '''
-from os import path
-from tempfile import mkdtemp
 
-from command.DataUtils import get_serialize_data
 import numpy as np
 from sklearn.decomposition import PCA, IncrementalPCA, KernelPCA
-import matplotlib.pyplot as plt
 
+from command.DataUtils import get_serialize_data
 from dimensionality_reduction.scikit.utils.matplotUtils import explained_variance_ratio_vs_num
 
 '''
@@ -147,8 +144,8 @@ code :Scikit-Learn 方式一
 n_batches = 100
 inc_pca = IncrementalPCA(n_components=154)
 for x_batch in np.array_split(X_train, n_batches):
-	# 部分适配
-	inc_pca.partial_fit(x_batch)
+    # 部分适配
+    inc_pca.partial_fit(x_batch)
 
 X_mnist_reduced = inc_pca.transform(X_train)
 
@@ -182,7 +179,9 @@ print('---------------------------------------------核主成分分析----------
 作用:使复杂的非线性投影降维成为可能
 
 这里我们使用RBF(高斯相似度)核函数
+数据量太大会报 :Process finished with exit code 138 (interrupted by signal 10: SIGBUS)
+所以建议分批次进行降维
 '''
-rbf_pca = KernelPCA(n_components=2,kernel='rbf',gamma=0.04)
-x_rbf_reduced = rbf_pca.fit_transform(X_train)
+rbf_pca = KernelPCA(n_components=2, kernel='rbf', gamma=0.04)
+x_rbf_reduced = rbf_pca.fit_transform(X_train[:100, :])
 print(x_rbf_reduced.shape)
