@@ -52,6 +52,8 @@ def select_path(mode):
         path = '/Users/houruixiang/python/Scikit-learn-master/Random_Forests/scikit/assets'
     elif mode == 5:
         path = '/Users/houruixiang/python/Scikit-learn-master/dimensionality_reduction/assets'
+    elif mode == 6:
+        path = '/Users/houruixiang/python/Scikit-learn-master/Random_Forests/scikit/assets/MNIST'
     return path
 
 

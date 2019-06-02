@@ -30,6 +30,9 @@ warnings.filterwarnings("ignore")
 下面来看 scikit代码
 1.包含500个决策树分类器
 2.随机从训练集中选取100个训练示例进行训练
+
+对于bagging当然ok  但是对于pasting不放回的训练 数据集 = 模型数 * max_samples
+所以我觉得 bagging更加好一些 而且可以进行包外评估
 '''
 '''
 params:
