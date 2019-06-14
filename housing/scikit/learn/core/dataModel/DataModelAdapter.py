@@ -5,6 +5,8 @@
 # @Site    : 
 # @File    : DataModelAdapter.py
 # @Software: PyCharm
+from pandas import DataFrame
+
 from housing.scikit.learn.utils.DataTestingUtils import serialize_data
 
 print('--------------------------------------------调参方式一:网格搜索---------------------------------------------------')
@@ -92,3 +94,6 @@ RandomForestRegressor(bootstrap=True, criterion='mse', max_depth=None,
 '''
 
 serialize_data(grid_search, 'grid_search')
+
+
+

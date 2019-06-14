@@ -116,7 +116,7 @@ print('-------------------------------评估决策树---------------------------
 @params-2: 处理之后的数据 
 @params-3: 标签
 ...
-@params-5: 训练次数
+@params-5: 训练次数 + 折叠数目
 '''
 tree_scores = cross_val_score(tree_reg, housing_prepared, housing_label, scoring='neg_mean_squared_error', cv=10)
 tree_rmse_scores = np.sqrt(-tree_scores)

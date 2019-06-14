@@ -48,7 +48,7 @@ x = 2 * np.random.rand(100, 1)
 y = 4 + 3 * x + np.random.rand(100, 1)
 
 '''
-python验证上面的标准方程
+python验证上面的 
 np.ones---按照参数
 '''
 x_b = np.c_[np.ones((100, 1)), x]  # add x0

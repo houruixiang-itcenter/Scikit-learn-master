@@ -27,6 +27,11 @@ def display_scores(scores):
     :param scores:
     :return:
     '''
+    '''
+    Scores:每次交叉的均方根误差
+    Mean:n次折叠的平均均方根误差
+    Standard deviation:上下浮动的偏移量
+    '''
     print('Scores:', scores)
     print('Mean:', scores.mean())
     print('Standard deviation:', scores.std())
